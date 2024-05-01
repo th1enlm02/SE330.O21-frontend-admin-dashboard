@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import DataTable from '../../components/DataTable';
+import { BASE_URL } from '../../common/api/localhost';
 
 function FeedbackManagement() {
   const [feedbacks, setFeedbacks] = useState([]);
@@ -8,7 +9,7 @@ function FeedbackManagement() {
 
   useEffect(() => {
     async function fetchFeedbacks() {
-      fetch("http://localhost:8080/api/feedback/laytatcafeedback")
+      fetch(`${BASE_URL}/api/feedback/laytatcafeedback`)
         .then((response) => response.json())
         .then((data) => {
           setFeedbacks(data);
@@ -16,7 +17,7 @@ function FeedbackManagement() {
     }
 
     async function fetchBooks() {
-      fetch("http://localhost:8080/api/sach/getallsach")
+      fetch(`${BASE_URL}/api/sach/getallsach`)
         .then((response) => response.json())
         .then((data) => {
           setBooks(data);
@@ -31,45 +32,46 @@ function FeedbackManagement() {
     setSearchQuery(e.target.value);
   };
 
-  const filteredFeedbacks = feedbacks.filter(feedback =>
-    feedback.tenTaiKhoan.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    feedback.noiDung.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredFeedbacks = feedbacks.filter(
+    (feedback) =>
+      feedback.tenTaiKhoan.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      feedback.noiDung.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const getBookTitleById = (id) => {
-    const book = books.find(book => book.id === id);
+    const book = books.find((book) => book.id === id);
     return book ? book.tieuDe : 'Unknown';
   };
 
   const feedbackHeaders = [
     {
-      label: "ID",
-      className: "relative w-12 px-6 sm:w-16 sm:px-8",
+      label: 'ID',
+      className: 'relative w-12 px-6 sm:w-16 sm:px-8',
       render: (item) => item.id,
     },
     {
-      label: "Tên tài khoản",
-      className: "px-3 py-4 text-left text-sm font-semibold tracking-wide text-slate-900 whitespace-nowrap",
+      label: 'Tên tài khoản',
+      className: 'px-3 py-4 text-left text-sm font-semibold tracking-wide text-slate-900 whitespace-nowrap',
       render: (item) => item.tenTaiKhoan,
     },
     {
-      label: "Sách",
-      className: "pl-3 pr-4 py-4 text-left text-sm tracking-wide text-slate-900 whitespace-normal sm:pr-6",
+      label: 'Sách',
+      className: 'pl-3 pr-4 py-4 text-left text-sm tracking-wide text-slate-900 whitespace-normal sm:pr-6',
       render: (item) => getBookTitleById(item.sachId),
     },
     {
-      label: "Nội dung",
-      className: "pl-3 pr-4 py-4 text-left text-sm tracking-wide text-slate-900 whitespace-normal sm:pr-6",
+      label: 'Nội dung',
+      className: 'pl-3 pr-4 py-4 text-left text-sm tracking-wide text-slate-900 whitespace-normal sm:pr-6',
       render: (item) => item.noiDung,
     },
     {
-      label: "Số sao",
-      className: "pl-3 pr-4 py-4 text-left text-sm tracking-wide text-slate-900 whitespace-nowrap sm:pr-6",
+      label: 'Số sao',
+      className: 'pl-3 pr-4 py-4 text-left text-sm tracking-wide text-slate-900 whitespace-nowrap sm:pr-6',
       render: (item) => item.soSao,
     },
     {
-      label: "Ngày feedback",
-      className: "pl-3 pr-4 py-4 text-left text-sm tracking-wide text-slate-900 whitespace-nowrap sm:pr-6",
+      label: 'Ngày feedback',
+      className: 'pl-3 pr-4 py-4 text-left text-sm tracking-wide text-slate-900 whitespace-nowrap sm:pr-6',
       render: (item) => new Date(item.ngayFeedback).toLocaleDateString(),
     },
   ];
