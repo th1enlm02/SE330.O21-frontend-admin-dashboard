@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import DataTable from "../../components/DataTable";
+import DataTable from '../../components/DataTable';
+import { BASE_URL } from '../../common/api/localhost';
 
 function Order() {
   const [orders, setOrders] = useState([]);
@@ -7,7 +8,7 @@ function Order() {
 
   useEffect(() => {
     async function fetchOrders() {
-      fetch("http://localhost:8080/api/donhang/getalldonhang")
+      fetch(`${BASE_URL}/api/donhang/getalldonhang`)
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
@@ -21,49 +22,43 @@ function Order() {
     setSearchQuery(e.target.value);
   };
 
-  const filteredOrders = orders.filter(order =>
-    order.tenNguoiNhan.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredOrders = orders.filter((order) => order.tenNguoiNhan.toLowerCase().includes(searchQuery.toLowerCase()));
 
   const orderHeaders = [
     {
-      label: "ID",
-      className: "relative w-12 px-6 sm:w-16 sm:px-8",
+      label: 'ID',
+      className: 'relative w-12 px-6 sm:w-16 sm:px-8',
       render: (item) => item.id,
     },
     {
-      label: "Ngày đặt",
-      className: "px-3 py-4 text-left text-sm tracking-wide text-slate-900 whitespace-nowrap",
+      label: 'Ngày đặt',
+      className: 'px-3 py-4 text-left text-sm tracking-wide text-slate-900 whitespace-nowrap',
       render: (item) => new Date(item.ngayDat).toLocaleDateString(),
     },
     {
-      label: "Tên người nhận",
-      className: "px-3 py-4 text-left text-sm tracking-wide text-slate-900 whitespace-nowrap",
+      label: 'Tên người nhận',
+      className: 'px-3 py-4 text-left text-sm tracking-wide text-slate-900 whitespace-nowrap',
       render: (item) => item.tenNguoiNhan,
     },
     {
-      label: "Số điện thoại",
-      className: "px-3 py-4 text-left text-sm tracking-wide text-slate-900 whitespace-nowrap",
+      label: 'Số điện thoại',
+      className: 'px-3 py-4 text-left text-sm tracking-wide text-slate-900 whitespace-nowrap',
       render: (item) => item.soDienThoai,
     },
     {
-      label: "Địa chỉ",
-      className: "pl-3 pr-4 py-4 text-left text-sm tracking-wide text-slate-900",
-      render: (item) => (
-        <div className="whitespace-normal break-words">
-          {item.diaChi}
-        </div>
-      ),
+      label: 'Địa chỉ',
+      className: 'pl-3 pr-4 py-4 text-left text-sm tracking-wide text-slate-900',
+      render: (item) => <div className="whitespace-normal break-words">{item.diaChi}</div>,
     },
     {
-      label: "Tổng tiền",
-      className: "px-3 py-4 text-left text-sm tracking-wide text-slate-900 whitespace-nowrap",
+      label: 'Tổng tiền',
+      className: 'px-3 py-4 text-left text-sm tracking-wide text-slate-900 whitespace-nowrap',
       render: (item) => item.tongTien.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }),
     },
     {
-      label: "Đã thanh toán",
-      className: "px-3 py-4 text-left text-sm tracking-wide text-slate-900 whitespace-nowrap",
-      render: (item) => item.daThanhToan ? 'Đã thanh toán' : 'Chưa thanh toán',
+      label: 'Đã thanh toán',
+      className: 'px-3 py-4 text-left text-sm tracking-wide text-slate-900 whitespace-nowrap',
+      render: (item) => (item.daThanhToan ? 'Đã thanh toán' : 'Chưa thanh toán'),
     },
   ];
 
